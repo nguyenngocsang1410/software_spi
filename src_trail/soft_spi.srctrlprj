@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<config>
+    <source_groups>
+        <source_group_8360ea59-5741-4178-82ac-45dc52cbb90e>
+            <build_file_path>
+                <compilation_db_path>../Debug/compile_commands.json</compilation_db_path>
+            </build_file_path>
+            <indexed_header_paths>
+                <indexed_header_path>../Core/Inc</indexed_header_path>
+                <indexed_header_path>../Core/Src</indexed_header_path>
+                <indexed_header_path>../Core/Startup</indexed_header_path>
+                <indexed_header_path>../Drivers/CMSIS/Device/ST/STM32F4xx/Include</indexed_header_path>
+                <indexed_header_path>../Drivers/CMSIS/Include</indexed_header_path>
+                <indexed_header_path>../Drivers/STM32F4xx_HAL_Driver/Inc</indexed_header_path>
+                <indexed_header_path>../Drivers/STM32F4xx_HAL_Driver/Src</indexed_header_path>
+                <indexed_header_path>../soft_spi</indexed_header_path>
+                <indexed_header_path>../test_spi</indexed_header_path>
+                <indexed_header_path>../tinyusb/examples/device/cdc_msc/src</indexed_header_path>
+                <indexed_header_path>../tinyusb/hw/bsp</indexed_header_path>
+                <indexed_header_path>../tinyusb/src</indexed_header_path>
+            </indexed_header_paths>
+            <name>C/C++ from Compilation Database</name>
+            <pch_flags>
+                <use_compiler_flags>1</use_compiler_flags>
+            </pch_flags>
+            <status>enabled</status>
+            <type>C/C++ from Compilation Database</type>
+        </source_group_8360ea59-5741-4178-82ac-45dc52cbb90e>
+    </source_groups>
+    <version>8</version>
+</config>
