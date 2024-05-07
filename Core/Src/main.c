@@ -20,6 +20,7 @@
 #include "main.h"
 #include "tim.h"
 #include "usart.h"
+#include "usb_device.h"
 #include "gpio.h"
 
 /* Private includes ----------------------------------------------------------*/
@@ -45,13 +46,34 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-#define MAIN_DBG_MSG_EN   1
+#define LOG_MSG_CDC		  	  0
+#define LOG_MSG_ITM 		    1
+#define MAIN_DBG_MSG_EN   	1
 
 #if (MAIN_DBG_MSG_EN != 0)
 #define PRINTF_MAIN(...)  printf(__VA_ARGS__)
 #else
 #define PRINTF_MAIN(...)  (void)0
 #endif /* End of (MAIN_DBG_MSG_EN != 0) */
+
+
+/* Override low-level _write system call */
+#if(LOG_MSG_CDC == 1)
+#include "usbd_cdc_if.h"
+int _write(int file, char *ptr, int len){
+    CDC_Transmit_FS((uint8_t*)ptr, len);
+    return len;
+}
+#elif (LOG_MSG_ITM == 1)
+int _write(int file, char *ptr, int len) {
+    int DataIdx;
+    for (DataIdx = 0; DataIdx < len; DataIdx++) {
+        ITM_SendChar(*ptr++);
+    }
+    return len;
+}
+#else
+#endif
 
 /* USER CODE END PD */
 
@@ -76,14 +98,15 @@ void SystemClock_Config(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-
-/* Override low-level _write system call */
-int _write(int file, char *ptr, int len) {
-	int DataIdx;
-	for (DataIdx = 0; DataIdx < len; DataIdx++) {
-		ITM_SendChar(*ptr++);
-	}
-	return len;
+void USB_DEVICE_MasterHardReset(void) {
+	GPIO_InitTypeDef GPIO_InitStruct;
+	GPIO_InitStruct.Pin = GPIO_PIN_12;
+	GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+	GPIO_InitStruct.Pull = GPIO_PULLDOWN;
+	GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
+	HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+	HAL_GPIO_WritePin(GPIOA, GPIO_PIN_12, 0);
+	HAL_Delay(1000);
 }
 
 /* Delay us using TIM1 */
@@ -162,7 +185,9 @@ int main(void)
   SystemClock_Config();
 
   /* USER CODE BEGIN SysInit */
-
+#if (LOG_MSG_CDC != 0)
+	USB_DEVICE_MasterHardReset();
+#endif /* End of (LOG_MSG_CDC != 0) */
   /* USER CODE END SysInit */
 
   /* Initialize all configured peripherals */
@@ -170,11 +195,17 @@ int main(void)
   MX_TIM1_Init();
   MX_USART2_UART_Init();
   MX_TIM8_Init();
+  MX_USB_DEVICE_Init();
+  MX_TIM2_Init();
   /* USER CODE BEGIN 2 */
-
-//   SPI IO init
+#if (LOG_MSG_CDC != 0)
+	while (!CDC_IsPortOpen()) {
+		;
+	}
+#endif /* End of (LOG_MSG_CDC != 0) */
+	// SPI IO init
 	spi_io_init();
-//   SPI timer init
+	//   SPI timer init
 	if (spi_timer_init()) {
 		PRINTF_MAIN("[ERR] Failed to init TIM1 \n");
 	}
@@ -253,10 +284,10 @@ void SystemClock_Config(void)
   RCC_OscInitStruct.HSEState = RCC_HSE_ON;
   RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
   RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
-  RCC_OscInitStruct.PLL.PLLM = 4;
-  RCC_OscInitStruct.PLL.PLLN = 72;
+  RCC_OscInitStruct.PLL.PLLM = 8;
+  RCC_OscInitStruct.PLL.PLLN = 336;
   RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV2;
-  RCC_OscInitStruct.PLL.PLLQ = 3;
+  RCC_OscInitStruct.PLL.PLLQ = 7;
   if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
   {
     Error_Handler();
@@ -268,10 +299,10 @@ void SystemClock_Config(void)
                               |RCC_CLOCKTYPE_PCLK1|RCC_CLOCKTYPE_PCLK2;
   RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
   RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
-  RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV2;
-  RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
+  RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV4;
+  RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV2;
 
-  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_2) != HAL_OK)
+  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_5) != HAL_OK)
   {
     Error_Handler();
   }

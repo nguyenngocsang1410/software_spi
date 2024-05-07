@@ -1996,6 +1996,101 @@ int spi_validate_slave(uint8_t slave_addr, const spi_test_reg_t *regs, uint32_t 
 }
     
 
+int spi_validate_rssi(uint8_t slave_addr, const spi_test_reg_t *regs,
+		uint32_t num_regs) {
+	// Check inputs
+	if (regs == NULL) {
+		printf("[ERR]: Invalid regs\n");
+		return -1;
+	}
+
+	if (num_regs == 0) {
+		printf("[ERR]: Invalid num_regs\n");
+		return -1;
+	}
+
+	// Create a buffer to store the read back register values
+	uint32_t read_buffer[num_regs];
+	memset(read_buffer, 0, sizeof(read_buffer));
+
+	int ret = 0;
+
+	// Read the register values
+	for (uint32_t i = 0; i < num_regs; i++) {
+		// Set corresponding slave addr
+		softspi_slave_select(slave_addr);
+		switch (slave_addr) {
+		case SPI_RX1_SLAVE_ADDR:
+		case SPI_RX2_SLAVE_ADDR:
+		case SPI_ORX1_SLAVE_ADDR:
+		case SPI_ORX2_SLAVE_ADDR:
+		case SPI_TX1_SLAVE_ADDR:
+		case SPI_TX2_SLAVE_ADDR:
+		case SPI_PLL_SLAVE_ADDR:
+		case SPI_RX1_RSSI_SLAVE_ADDR:
+		case SPI_RX2_RSSI_SLAVE_ADDR:
+		case SPI_JESD204_TX1_SLAVE_ADDR:
+		case SPI_JESD204_TX2_SLAVE_ADDR:
+		case SPI_JESD204_RX_SLAVE_ADDR:
+		case SPI_PHY_SLAVE_ADDR:
+		case SPI_QEC_RX1_SLAVE_ADDR:
+		case SPI_QEC_RX2_SLAVE_ADDR:
+		case SPI_QEC_ORX1_SLAVE_ADDR:
+		case SPI_QEC_ORX2_SLAVE_ADDR:
+		case SPI_QEC_TX1_SLAVE_ADDR:
+		case SPI_QEC_TX2_SLAVE_ADDR:
+		case SPI_FIR_TX1_SLAVE_ADDR:
+		case SPI_FIR_TX2_SLAVE_ADDR:
+		case SPI_FIR_RX1_SLAVE_ADDR:
+		case SPI_FIR_RX2_SLAVE_ADDR:
+		case SPI_FIR_ORX1_SLAVE_ADDR:
+		case SPI_FIR_ORX2_SLAVE_ADDR:
+			ret = rf_spi_transfer(SOFTSPI_READ, SOFTSPI_FIRST_BIT_MSB,
+					regs[i].reg_addr, regs[i].reg_addr_size, &read_buffer[i],
+					regs[i].reg_val_size);
+			break;
+
+		case SPI_DAC1_SLAVE_ADDR:
+		case SPI_DAC2_SLAVE_ADDR:
+			ret = dac_spi_transfer(SOFTSPI_READ, SOFTSPI_FIRST_BIT_MSB,
+					regs[i].reg_addr, regs[i].reg_addr_size, &read_buffer[i],
+					regs[i].reg_val_size);
+			break;
+
+		case SPI_ADC1_SLAVE_ADDR:
+		case SPI_ADC2_SLAVE_ADDR:
+		case SPI_ADC3_SLAVE_ADDR:
+		case SPI_ADC4_SLAVE_ADDR:
+			ret = adc_spi_transfer(SOFTSPI_READ, SOFTSPI_FIRST_BIT_MSB,
+					regs[i].reg_addr, regs[i].reg_addr_size, &read_buffer[i],
+					regs[i].reg_val_size);
+			break;
+
+		default:
+			printf("[ERR] spi_validate_slave() Not supported slave address: %d\n",
+					slave_addr);
+			break;
+		}
+
+		if (ret != 0) {
+			printf("[ERR] Failed to read from reg addr: 0x%X, addr width: %d\n",
+					(unsigned int) regs[i].reg_addr, regs[i].reg_addr_size);
+			// Release the slave
+			softspi_slave_deselect();
+			return -1;
+		}
+		// Release the slave
+		softspi_slave_deselect();
+		if (regs[i].reg_addr == 0x09)
+			printf(
+					"Read from reg addr: 0x%X, val: 0x%X, reg addr width: %d, reg val width: %d\n",
+					(unsigned int) regs[i].reg_addr, (unsigned int) read_buffer[i],
+					regs[i].reg_addr_size, regs[i].reg_val_size);
+	}
+	return ret;
+}
+
+
 int spi_master_test()
 {
     int ret = 0;
@@ -2040,14 +2135,14 @@ int cfg_counter = 1;
  * 0: Write
  * 1: Read
  */
-int ctrl_token = 0;
-
+int ctrl_token = 1;
+unsigned int run_cnt = 0;
+int read_delay = 10;
 int spi_master_cfg() {
 	int ret = 0;
 	while (1) {
 		if (ctrl_token == 0) {
-			ret = spi_write_slave(
-					spi_slave_devices_for_cfg[cfg_counter].slave_addr,
+			ret = spi_write_slave(spi_slave_devices_for_cfg[cfg_counter].slave_addr,
 					spi_slave_devices_for_cfg[cfg_counter].reg,
 					spi_slave_devices_for_cfg[cfg_counter].slave_numb_reg);
 			if (ret != 0) {
@@ -2057,15 +2152,16 @@ int spi_master_cfg() {
 			HAL_Delay(3000); // 10_000 ms
 //		cfg_counter = (cfg_counter == 0) ? 1 : 0;
 		} else if (ctrl_token == 1) {
-			ret = spi_validate_slave(
-					spi_slave_devices_for_cfg[cfg_counter].slave_addr,
+			run_cnt++;
+			printf("%u\n", run_cnt);
+			ret = spi_validate_slave(spi_slave_devices_for_cfg[cfg_counter].slave_addr,
 					spi_slave_devices_for_cfg[cfg_counter].reg,
 					spi_slave_devices_for_cfg[cfg_counter].slave_numb_reg);
 			if (ret != 0) {
 				printf("[ERR] Failed to write to %s\n",
 						spi_slave_devices_for_cfg[cfg_counter].slave_name);
 			}
-			HAL_Delay(3000); // 10_000 ms
+			HAL_Delay(read_delay); // 3000 ms
 			//		cfg_counter = (cfg_counter == 0) ? 1 : 0;
 		}
 	}
