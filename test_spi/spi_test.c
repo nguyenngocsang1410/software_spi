@@ -36,7 +36,7 @@
 /******************************************************************************
 * Module Variable Definitions
 *******************************************************************************/
-
+extern UART_HandleTypeDef huart2;
 
 /******************************************************************************
 * Slave Registers database and their values
@@ -327,35 +327,6 @@ spi_test_reg_t spi_pll_cfg_regs[] =
     {0x09,                 0x0,       7,              8},
     {0x0A,                 0x0,       7,              8},
     {0x0B,                 0x0,       7,              8},
-    {0x0C,      		   0x0,       7,              8},
-    {0x0D,     			   0x0,       7,              8},
-    {0x0E,    			   0x0,       7,              8},
-    {0x0F,    			   0x0,       7,              8},
-    {0x10,    			   0x0,       7,              8},
-    {0x11,    			   0x0,       7,              8},
-    {0x12,                 0x0,       7,              8},
-    {0x13,                 0x0,       7,              8},
-    {0x14,                 0x0,       7,              8},
-    {0x15,                 0x0,       7,              8},
-    {0x16,                 0x0,       7,              8},
-    {0x17,                 0x0,       7,              8},
-};
-
-spi_test_reg_t spi_pll_cfg_regs_read[] =
-{
-    /* REG_ADDR,         REG_VALUE,  REG_ADDR_SIZE,  REG_VALUE_SIZE */
-    {0x00,                 0x0,       7,              8},
-    {0x01,                 0x0,       7,              8},
-    {0x02,                 0x0,       7,              8},
-    {0x03,                 0x0,       7,              8},
-    {0x04,                 0x0,       7,              8},
-    {0x05,                 0x0,       7,              8},
-    {0x06,                 0x0,       7,              8},
-    {0x07,                 0x0,       7,              8},
-    {0x08,                 0x0,       7,              8},
-    {0x09,                 0x0,       7,              8},
-    {0x0A,                 0x0,       7,              8},
-    {0x0B,                 0x0,       7,              8},
     {DSM_ENABLE_ADDR,      0x0,       7,              8},
     {PLL_ADDR_0D_ADDR,     0x0,       7,              8},
     {FRAC_DIVE_B0_ADDR,    0x0,       7,              8},
@@ -406,6 +377,39 @@ spi_test_reg_t spi_pll_cfg_regs_state_1[] =
     {0x20,                 0b0,       7,              8},
 	{0x21,                 0b0,       7,              8},
 };
+
+spi_test_reg_t spi_pll_cfg_regs_chkpt1[] =
+{
+    /* REG_ADDR,         REG_VALUE,  REG_ADDR_SIZE,  REG_VALUE_SIZE */
+    {0x00,                 0x2,       7,              8},
+    {0x01,                 0x0,       7,              8},
+    {0x02,                 0x0,       7,              8},
+    {0x03,                 0x0,       7,              8},
+    {0x04,                 0x0,       7,              8},
+    {0x05,                 0x0,       7,              8},
+    {0x06,                 0x0,       7,              8},
+    {0x07,                 0x0,       7,              8},
+    {0x08,                 0x0,       7,              8},
+    {0x09,                 0x0,       7,              8},
+    {0x0A,                 0x0,       7,              8},
+    {0x0B,                 0x0,       7,              8},
+    {DSM_ENABLE_ADDR,      0x0,       7,              8},
+    {PLL_ADDR_0D_ADDR,     0x0,       7,              8},
+    {FRAC_DIVE_B0_ADDR,    0x0,       7,              8},
+    {FRAC_DIVE_B1_ADDR,    0x0,       7,              8},
+    {FRAC_DIVE_B2_ADDR,    0x0,       7,              8},
+    {FRAC_DIVE_B3_ADDR,    0x0,       7,              8},
+    {0x12,                 0x0,       7,              8},
+    {0x13,                 0x0,       7,              8},
+    {0x14,                 0x0,       7,              8},
+    {0x15,                 0x0,       7,              8},
+    {0x16,                 0x0,       7,              8},
+    {0x17,                 0x0,       7,              8},
+	{0x18,                 0x0,       7,              8},
+    {0x19,                 0x0,       7,              8},
+    {0x20,                 0x0,       7,              8},
+	{0x21,                 0x0,       7,              8},
+};
 //------------------------------------------------------------------------------------
 
 const spi_test_reg_t spi_rx1_rssi_test_regs[] = 
@@ -437,6 +441,18 @@ spi_test_reg_t spi_rx_rssi_cfg_regs[] =
     {0x09,                 0x0,       7,              10},
 };
 
+spi_test_reg_t spi_rx_rssi_cfg_regs_chkpt1[] = {
+/* REG_ADDR,         REG_VALUE,  REG_ADDR_SIZE,  REG_VALUE_SIZE */
+	{0x00,                 0x0,       7,              10},
+	{0x01,                 0x0,       7,              10},
+	{0x02,                 0x3,       7,              10},
+	{0x03,                 0x0,       7,              10},
+	{0x04,                 0x5,       7,              10},
+	{0x05,                 0x0,       7,              10},
+	{0x06,                 0x10,       7,              10},
+	{0x07,                 0x2,       7,              10},
+	{0x09,                 0x0,       7,              10},
+};
 //------------------------------------------------------------------------------------
 const spi_test_reg_t spi_rx2_rssi_test_regs[] = 
 {
@@ -1444,14 +1460,18 @@ spi_slave_test_t spi_slave_devices[] =
 
 //------------------------------------------------------------------------------------
 
-spi_slave_test_t spi_slave_devices_for_cfg[] =
-{
-    /* SLAVE ADDR,                  SLAVE_NUMB_REGS,                         SLAVE_REGS,                    SLAVE_NAME*/
-	{SPI_RX1_RSSI_SLAVE_ADDR,       ARRAY_SIZE(spi_rx_rssi_cfg_regs),     	spi_rx_rssi_cfg_regs,   	"RX1 RSSI"},
-	{SPI_RX2_RSSI_SLAVE_ADDR,       ARRAY_SIZE(spi_rx_rssi_cfg_regs),     	spi_rx_rssi_cfg_regs,   	"RX2 RSSI"},
-	{SPI_PLL_SLAVE_ADDR,       		ARRAY_SIZE(spi_pll_cfg_regs),     		spi_pll_cfg_regs,         	"PLL"},
-	{SPI_PLL_SLAVE_ADDR,       		ARRAY_SIZE(spi_pll_cfg_regs_read),     	spi_pll_cfg_regs_read,      "PLL"},
-	{SPI_PLL_SLAVE_ADDR,       		ARRAY_SIZE(spi_pll_cfg_regs_state_1),   spi_pll_cfg_regs_state_1,   "PLL"},
+/**
+ * cfg_counter = {5,6} --> chkpt1
+ */
+spi_slave_test_t spi_slave_devices_for_cfg[] = {
+/* SLAVE ADDR,                  SLAVE_NUMB_REGS,                         SLAVE_REGS,                    SLAVE_NAME*/
+{ SPI_RX1_RSSI_SLAVE_ADDR, 	ARRAY_SIZE(spi_rx_rssi_cfg_regs),			spi_rx_rssi_cfg_regs, 		"RX1 RSSI" },
+{ SPI_RX2_RSSI_SLAVE_ADDR, 	ARRAY_SIZE(spi_rx_rssi_cfg_regs), 			spi_rx_rssi_cfg_regs, 		"RX2 RSSI" },
+{ SPI_PLL_SLAVE_ADDR, 		ARRAY_SIZE(spi_pll_cfg_regs), 				spi_pll_cfg_regs, 			"PLL" },
+{ SPI_PLL_SLAVE_ADDR,	 	ARRAY_SIZE(spi_pll_cfg_regs_state_1),		spi_pll_cfg_regs_state_1, 	"PLL" },
+{ SPI_RX2_RSSI_SLAVE_ADDR, 	ARRAY_SIZE(spi_rx_rssi_cfg_regs_chkpt1), 	spi_rx_rssi_cfg_regs_chkpt1, "RX2 RSSI" },
+{ SPI_PLL_SLAVE_ADDR,	 	ARRAY_SIZE(spi_pll_cfg_regs_chkpt1),		spi_pll_cfg_regs_chkpt1, 	"PLL" },
+
 };
 
 //------------------------------------------------------------------------------------
@@ -2128,41 +2148,78 @@ int spi_master_test()
 /**
  * 0: RSSI1
  * 1: RSSI2
+ *
+ * 5: RSSI2 chkpt1
+ * 6: PLL chkpt1
  */
-int cfg_counter = 1;
+int cfg_counter = 5;
 
 /**
  * 0: Write
  * 1: Read
  */
-int ctrl_token = 1;
+int ctrl_token = 2;
 unsigned int run_cnt = 0;
 int read_delay = 10;
+
+uint8_t auto_read = 1;
+uint32_t last_auto_read = 0;
+uint32_t auto_read_delay = 100;
+
+spi_test_reg_t rssi_reg9 = { 0x09, 0x0, 7, 10 };
+int32_t elapse_time = 0;
+char buffer[10] = {0};
+
 int spi_master_cfg() {
 	int ret = 0;
 	while (1) {
-		if (ctrl_token == 0) {
-			ret = spi_write_slave(spi_slave_devices_for_cfg[cfg_counter].slave_addr,
-					spi_slave_devices_for_cfg[cfg_counter].reg,
-					spi_slave_devices_for_cfg[cfg_counter].slave_numb_reg);
-			if (ret != 0) {
-				printf("[ERR] Failed to write to %s\n",
-						spi_slave_devices_for_cfg[cfg_counter].slave_name);
+		switch (ctrl_token) {
+			case 0: {
+				ret = spi_write_slave(
+						spi_slave_devices_for_cfg[cfg_counter].slave_addr,
+						spi_slave_devices_for_cfg[cfg_counter].reg,
+						spi_slave_devices_for_cfg[cfg_counter].slave_numb_reg);
+				if (ret != 0) {
+					printf("[ERR] Failed to write to %s\n",
+							spi_slave_devices_for_cfg[cfg_counter].slave_name);
+				}
+				HAL_Delay(3000); // 10_000 ms
+				break;
 			}
-			HAL_Delay(3000); // 10_000 ms
-//		cfg_counter = (cfg_counter == 0) ? 1 : 0;
-		} else if (ctrl_token == 1) {
-			run_cnt++;
-			printf("%u\n", run_cnt);
-			ret = spi_validate_slave(spi_slave_devices_for_cfg[cfg_counter].slave_addr,
-					spi_slave_devices_for_cfg[cfg_counter].reg,
-					spi_slave_devices_for_cfg[cfg_counter].slave_numb_reg);
-			if (ret != 0) {
-				printf("[ERR] Failed to write to %s\n",
-						spi_slave_devices_for_cfg[cfg_counter].slave_name);
+			case 1: {
+				run_cnt++;
+				printf("%u\n", run_cnt);
+				ret = spi_validate_slave(
+						spi_slave_devices_for_cfg[cfg_counter].slave_addr,
+						spi_slave_devices_for_cfg[cfg_counter].reg,
+						spi_slave_devices_for_cfg[cfg_counter].slave_numb_reg);
+				if (ret != 0) {
+					printf("[ERR] Failed to write to %s\n",
+							spi_slave_devices_for_cfg[cfg_counter].slave_name);
+				}
+				HAL_Delay(read_delay); // 3000 ms
+
+				break;
 			}
-			HAL_Delay(read_delay); // 3000 ms
-			//		cfg_counter = (cfg_counter == 0) ? 1 : 0;
+			case 2: {
+				while (auto_read) {
+					uint32_t current_time = HAL_GetTick();
+					if (current_time - last_auto_read >= auto_read_delay) {
+						elapse_time = current_time - last_auto_read;
+						last_auto_read = current_time;
+						softspi_slave_select(SPI_RX2_RSSI_SLAVE_ADDR);
+						rf_spi_transfer(SOFTSPI_READ, SOFTSPI_FIRST_BIT_MSB,
+								rssi_reg9.reg_addr, rssi_reg9.reg_addr_size,
+								(uint32_t*) &rssi_reg9.reg_val,
+								rssi_reg9.reg_val_size);
+//						printf("%lu\r\n", rssi_reg9.reg_val);
+						sprintf(buffer,"%lu\r\n",rssi_reg9.reg_val);
+						HAL_UART_Transmit(&huart2, (char*) buffer,
+								strlen(buffer), 1000);
+						softspi_slave_deselect();
+					}
+				}
+			}
 		}
 	}
 	return ret;

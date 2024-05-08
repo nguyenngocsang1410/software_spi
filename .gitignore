@@ -1,1 +1,6 @@
 /Debug/
+*.launch
+*.json
+.settings
+.vs
+.vscode
