@@ -32,8 +32,10 @@
 #define CMD_TYPE_SPI_WRITE              (0x01)
 
 // CMD ID
-#define CMD_SPI_WRITE_SLAVE             (0x01)
-#define CMD_SPI_WRITE_SLAVE_ACK         (0x02)
+#define CMD_SPI_WRITE_SLAVE             (0x01)	// Write only
+#define CMD_SPI_WRITE_SLAVE_ACK         (0x02)	// Write and verify
+#define CMD_SPI_READ_SLAVE				(0x03)	// Read
+#define CMD_SPI_AUTO_READ				(0x04)	// Auto read until stop or new cmd
 /******************************************************************************
 * Configuration Constants
 *******************************************************************************/
@@ -94,6 +96,8 @@ int frame_processing(uint8_t* p_input, uint16_t* p_input_len,
 // CMD declaration
 int cmd_spi_write_slave(uint8_t* p_payload, uint16_t* p_len);
 int cmd_spi_write_slave_ack(uint8_t* p_payload, uint16_t* p_len);
+int cmd_spi_read_slave(uint8_t* p_payload, uint16_t* p_len);
+int cmd_spi_auto_read(uint8_t* p_payload, uint16_t* p_len);
 
 #ifdef __cplusplus
 } // extern "C"

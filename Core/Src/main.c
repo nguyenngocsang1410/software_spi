@@ -18,6 +18,7 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "dma.h"
 #include "tim.h"
 #include "usart.h"
 #include "usb_device.h"
@@ -46,9 +47,9 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-#define LOG_MSG_CDC		  	  0
+#define LOG_MSG_CDC		  	  	0
 #define LOG_MSG_ITM 		    1
-#define MAIN_DBG_MSG_EN   	1
+#define MAIN_DBG_MSG_EN   		1
 
 #if (MAIN_DBG_MSG_EN != 0)
 #define PRINTF_MAIN(...)  printf(__VA_ARGS__)
@@ -88,6 +89,7 @@ int _write(int file, char *ptr, int len) {
 uint16_t frame_recv_size;
 uint8_t frame_received_buf[UART_RX_DMABUFFER_SIZE];
 uint8_t frame_resp_buf[UART_RX_DMABUFFER_SIZE];
+
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -121,7 +123,6 @@ void delay_ns(uint32_t ns) {
 	while (__HAL_TIM_GET_COUNTER(&htim1) < tick_2wait)
 		;
 }
-
 void delay_us(uint32_t us) {
 	delay_ns(us * 1000);
 }
@@ -192,6 +193,7 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
+  MX_DMA_Init();
   MX_TIM1_Init();
   MX_USART2_UART_Init();
   MX_TIM8_Init();
@@ -203,8 +205,10 @@ int main(void)
 		;
 	}
 #endif /* End of (LOG_MSG_CDC != 0) */
+
 	// SPI IO init
 	spi_io_init();
+
 	//   SPI timer init
 	if (spi_timer_init()) {
 		PRINTF_MAIN("[ERR] Failed to init TIM1 \n");
@@ -213,28 +217,25 @@ int main(void)
 	HAL_TIM_Base_Start(&htim1);
 
 	PRINTF_MAIN("[INFO] TEST START!\n");
-//	HAL_TIM_OC_Start(&htim8, TIM_CHANNEL_1);
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-	// Test SPI
-  SPI_SRC_EXTERNAL();
-
 	//------------------------------------------------------------------------------------
+	SPI_SRC_EXTERNAL();
 
-  	spi_master_cfg();
+	if (uart_app_init()) {
+		PRINTF_MAIN("[ERR] Failed to start UART\n");
+	}
 
-	//------------------------------------------------------------------------------------
-
-//  spi_master_test();
-//  if (uart_app_init())
-//  {
-//    PRINTF_MAIN("[ERR] Failed to start UART\n");
-//  }
-	PRINTF_MAIN("[INFO] TEST FINISH\n");
 	while (1) {
 
+		spi_master_cfg();
+
+		PRINTF_MAIN("[INFO] TEST FINISH\n");
+
+//	spi_master_test();
 #if (SPI_SLAVE_TEST_EN == 1)
     while(1)
     {
@@ -244,20 +245,26 @@ int main(void)
       spi_test_slave();
     }
 #endif /* End of (SPI_SLAVE_TEST_EN == 1) */
-//    HAL_Delay(100);
 
-//    if(uart_fifo_receive(frame_received_buf, &frame_recv_size) == 0)
-//    {
-//        PRINTF_MAIN("Data recv from UART FIFO: %.*s\n", frame_recv_size, frame_received_buf);
-//        uint16_t frame_resp_maxsize = sizeof(frame_resp_buf);
-//        if (0 == frame_processing(frame_received_buf, &frame_recv_size, frame_resp_buf, &frame_resp_maxsize))
-//        {
-//            if (0 != uart_app_send(frame_resp_buf, frame_resp_maxsize))
-//            {
-//                PRINTF_MAIN("[ERR] Failed to send response to UART\n");
-//            }
-//        }
-//    }
+		HAL_Delay(100);
+
+		if (uart_fifo_receive(frame_received_buf, &frame_recv_size) == 0)
+		{
+			PRINTF_MAIN("Data recv from UART FIFO: %.*s\n", frame_recv_size,
+					frame_received_buf);
+
+			uint16_t frame_resp_maxsize = sizeof(frame_resp_buf);
+
+			if (0 == frame_processing(frame_received_buf, &frame_recv_size,
+					frame_resp_buf, &frame_resp_maxsize))
+			{
+				if (0 != uart_app_send(frame_resp_buf, frame_resp_maxsize))
+				{
+					PRINTF_MAIN("[ERR] Failed to send response to UART\n");
+				}
+			}
+		}
+		//------------------------------------------------------------------------------------
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */

@@ -14,6 +14,7 @@
 #include <stdio.h>
 #include <stddef.h>
 #include <string.h>
+#include <stdbool.h>
 #include "cmd.h"
 
 #include "../test_spi/spi_test.h"
@@ -36,6 +37,10 @@ static cmd_t cmd_table[] =
 {
     {.cmd_id = CMD_SPI_WRITE_SLAVE,               .executer = (cmd_handler)&cmd_spi_write_slave},
     {.cmd_id = CMD_SPI_WRITE_SLAVE_ACK,           .executer = (cmd_handler)&cmd_spi_write_slave_ack},
+	/*>>>>-----------------------------------------------------------------------*/
+	{.cmd_id = CMD_SPI_READ_SLAVE,           	  .executer = (cmd_handler)&cmd_spi_read_slave},
+    {.cmd_id = CMD_SPI_AUTO_READ,           	  .executer = (cmd_handler)&cmd_spi_auto_read},
+	/*<<<<-----------------------------------------------------------------------*/
 };
 /******************************************************************************
 * Module Function
@@ -285,3 +290,85 @@ int cmd_spi_write_slave_ack(uint8_t* p_payload, uint16_t* p_len)
     }
     return ERR_OK;
 }
+
+/*>>>>-----------------------------------------------------------------------*/
+/*
+ *
+ * +------------+----------+---------------+-----------+----------------+
+ * | SLAVE_ADDR | REG_ADDR | REG_ADDR_SIZE | REG_VALUE | REG_VALUE_SIZE |
+ * +------------+----------+---------------+-----------+----------------+
+ * | 1B         | 4B       | 1B            | 4B        | 1B             |
+ * +------------+----------+---------------+-----------+----------------+
+ * | [0]        | [4:1]    | [5]           | [9:6]     | [10]           | (11B)
+ * +------------+----------+---------------+-----------+----------------+
+ */
+int cmd_spi_read_slave(uint8_t* p_payload, uint16_t* p_len)
+{
+    assert(p_payload != NULL);
+    assert(p_len != NULL);
+    if(*p_len != 11)
+    {
+        printf("\r\n [ERR] Invalid length \r\n");
+        return ERR_INVALID_CMD;
+    }
+    printf("\r\n [INFO] CMD_SPI_WRITE_SLAVE_ACK \r\n");
+    uint8_t slave_addr = p_payload[0];
+
+    uint32_t reg_addr = *(uint32_t*)&p_payload[1];
+    uint8_t reg_addr_size = p_payload[5];
+    uint8_t reg_val_size = p_payload[10];
+    spi_test_reg_t spi_read_reg =
+    {
+        .reg_addr = reg_addr,
+        .reg_addr_size = reg_addr_size,
+        .reg_val_size = reg_val_size,
+    };
+
+    if (0 != spi_read_slave(slave_addr, &spi_read_reg, 1))
+    {
+        printf("\r\n [ERR] CMD_SPI_READ_SLAVE failed to read slave \r\n");
+        return ERR_CMD_EXEC_FAIL;
+    }
+//    uint32_t reg_val = *(uint32_t*)&p_payload[6];
+	*(uint32_t*) (&p_payload[6]) = spi_read_reg.reg_val;
+
+    return ERR_OK;
+}
+
+extern spi_test_reg_t spi_auto_read_reg;
+extern bool AUTO_READ_FLAG;
+int cmd_spi_auto_read(uint8_t* p_payload, uint16_t* p_len)
+{
+    assert(p_payload != NULL);
+    assert(p_len != NULL);
+
+    uint8_t slave_addr = p_payload[0];
+
+    uint32_t reg_addr = *(uint32_t*)&p_payload[1];
+    uint8_t reg_addr_size = p_payload[5];
+	uint32_t reg_value = *(uint32_t*) (&p_payload[6]);
+    uint8_t reg_val_size = p_payload[10];
+	if (reg_value == 0)
+	{
+		spi_auto_read_reg = (spi_test_reg_t )
+				{
+						.reg_addr = reg_addr,
+						.reg_val = reg_value,
+						.reg_addr_size = reg_addr_size,
+						.reg_val_size = reg_val_size
+				};
+		AUTO_READ_FLAG = true;
+	}else
+	{
+		spi_auto_read_reg = (spi_test_reg_t )
+				{
+						.reg_addr = 0,
+						.reg_val = 0,
+						.reg_addr_size = 0,
+						.reg_val_size = 0,
+				};
+		AUTO_READ_FLAG = false;
+	}
+    return ERR_OK;
+}
+/*<<<<-----------------------------------------------------------------------*/
