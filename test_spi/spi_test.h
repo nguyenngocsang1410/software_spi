@@ -25,7 +25,7 @@
 * Preprocessor Constants
 *******************************************************************************/
 #define SPI_SLAVE_TEST_EN            (0)
-#define SPI_TEST_DBG_MSG_EN          (1)
+#define SPI_TEST_DBG_MSG_EN          (0)
 #define SPI_ENHANCE_TIMING_EN        (1) // If 1-> send read/write and slave addr in 1 transaction
 
 #define SPI_SRC_SELECT_ARM           (0)
@@ -235,6 +235,7 @@ int spi_master_cfg();
 extern "C"{
 #endif
 int spi_master_test();
+int spi_slaves_config_dc();
 int spi_test_slave();
 
 #ifdef __cplusplus

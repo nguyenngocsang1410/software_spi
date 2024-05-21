@@ -114,7 +114,10 @@ void USB_DEVICE_MasterHardReset(void) {
 /* Delay us using TIM1 */
 void delay_ns(uint32_t ns) {
 	// Calculate the number of ticks to wait based on the input delay in ns
-	uint32_t tick_2wait = (ns * (TIM1_SRC_CLK / (TIM1_PRES * 1000000))) / 1000;
+//	uint32_t tick_2wait = (ns * (TIM1_SRC_CLK / (TIM1_PRES * 1000000))) / 1000;
+	uint32_t tick_2wait = ns * ((TIM1_SRC_CLK / (TIM1_PRES * 1.0))
+			/ 1000000.0)
+			/ 1000;
 	if (tick_2wait < 1) {
 		PRINTF_MAIN("Error: delay_ns too short\n");
 		tick_2wait = 1;
@@ -126,7 +129,9 @@ void delay_ns(uint32_t ns) {
 void delay_us(uint32_t us) {
 	delay_ns(us * 1000);
 }
-
+uint32_t TIM2_GetTick_us(){
+	return __HAL_TIM_GET_COUNTER(&htim2);
+}
 /**
  * @brief Reverse the bit pattern of a given input data
  * @param data_input: The input data to reverse
@@ -215,6 +220,7 @@ int main(void)
 	}
 
 	HAL_TIM_Base_Start(&htim1);
+	HAL_TIM_Base_Start(&htim2);
 
 	PRINTF_MAIN("[INFO] TEST START!\n");
 
@@ -230,9 +236,9 @@ int main(void)
 	}
 
 	while (1) {
-
+#if (SANG_TEST == 1)
 		spi_master_cfg();
-
+#endif
 		PRINTF_MAIN("[INFO] TEST FINISH\n");
 
 //	spi_master_test();

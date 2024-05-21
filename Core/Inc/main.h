@@ -56,6 +56,7 @@ void Error_Handler(void);
 void leds_err_signal(void);
 void delay_ns(uint32_t ns);
 void delay_us(uint32_t us);
+uint32_t TIM2_GetTick_us();
 uint32_t reverse_bit(uint32_t data_input, uint8_t data_bit_width);
 /* USER CODE END EFP */
 
@@ -124,7 +125,9 @@ uint32_t reverse_bit(uint32_t data_input, uint8_t data_bit_width);
 #define MEMS_INT2_GPIO_Port GPIOE
 
 /* USER CODE BEGIN Private defines */
-
+#define SANG_TEST		1
+#define LINH_QEC_TEST   0
+#define HUNG_ADC_TEST   0
 /* USER CODE END Private defines */
 
 #ifdef __cplusplus

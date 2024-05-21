@@ -462,6 +462,19 @@ spi_test_reg_t spi_rx_rssi_cfg_regs_chkpt1[] = {
 	{0x07,                 0x2,       7,              10},
 	{0x09,                 0x0,       7,              10},
 };
+
+spi_test_reg_t spi_rx_rssi_cfg_regs_chkpt2[] = {
+/* REG_ADDR,         REG_VALUE,  REG_ADDR_SIZE,  REG_VALUE_SIZE */
+	{0x00,                 0x0,       7,              10},
+	{0x01,                 0x0,       7,              10},
+	{0x02,                 0x3,       7,              10},
+	{0x03,                 0x0,       7,              10},
+	{0x04,                 0x5,       7,              10},
+	{0x05,                 0x0,       7,              10},
+	{0x06,                 0x10,       7,              10},
+	{0x07,                 0x0,       7,              10},
+	{0x09,                 0x0,       7,              10},
+};
 //------------------------------------------------------------------------------------
 const spi_test_reg_t spi_rx2_rssi_test_regs[] =
 {
@@ -1419,8 +1432,29 @@ const spi_test_reg_t spi_fir_rx_test_regs[] = {
     {218,           0b00000000,        10,          8},
     {219,           0b00000000,        10,          8},
     {0  ,           0b00000001,        10,          8},
-
 };
+
+const spi_test_reg_t spi_tx_conf_dc_regs[] = {
+/* REG_ADDR,         REG_VALUE,  REG_ADDR_SIZE,  REG_VALUE_SIZE */
+    {0x0,                0x18,       7,              8},
+    {0x1,                0x70,       7,              8},
+    {0x2,                0x31,       7,              8},
+    {0x3,                0x4F,       7,              8},
+    {0x4,                0x60,       7,              8},
+    {0x5,                0x60,       7,              8},
+    {0x6,                0xFF,       7,              8},
+    {0x7,                0x2,        7,              8},
+    {0x8,                0x3,        7,              8},
+    {0x9,                0x0,        7,              8},
+    {0xA,                0x1,        7,              8},
+    {0xB,                0x4,        7,              8},
+    {0xC,                0x5,        7,              8},
+    {0xD,                0x1,        7,              8},
+    {0xE,                0x1,        7,              8},
+    {0xF,                0x1,        7,              8},
+    {0x10,               0x45,       7,              8},
+};
+
 
 /******************************************************************************
 * Slave devices
@@ -1486,6 +1520,10 @@ spi_slave_test_t spi_slave_devices_for_cfg[] = {
 };
 
 //------------------------------------------------------------------------------------
-
+spi_slave_test_t spi_slaves_conf[] = 
+{
+    {SPI_TX1_SLAVE_ADDR,            ARRAY_SIZE(spi_tx_conf_dc_regs),          spi_tx_conf_dc_regs,              "TX1"},
+    {SPI_TX2_SLAVE_ADDR,            ARRAY_SIZE(spi_tx_conf_dc_regs),          spi_tx_conf_dc_regs,              "TX2"},
+};
 
 #endif /* SPI_REGS_DATA_H_ */
