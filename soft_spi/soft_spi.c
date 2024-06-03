@@ -111,7 +111,7 @@ int spi_timer_init()
 
 /**
  * @brief: Send data via software SPI
- * 
+ *
  * @param p_data: pointer to the data to be sent
  * @param numb_bits: size of the data in bits
  * @return int: 0 if success, negative if failed
@@ -119,20 +119,20 @@ int spi_timer_init()
  */
 int softspi_transmit(uint8_t first_bit, const uint8_t *p_data, uint16_t numb_bits)
 {
-    if (p_data == NULL)
-    {
-        printf("[ERR]: Invalid data pointer\n");
-        return -1;
-    }
+	if (p_data == NULL)
+	{
+		printf("[ERR]: Invalid data pointer\n");
+		return -1;
+	}
 
-    if (numb_bits == 0)
-    {
-        printf("[ERR]: Invalid data size\n");
-        return -1;
-    }
+	if (numb_bits == 0)
+			{
+		printf("[ERR]: Invalid data size\n");
+		return -1;
+	}
 
     if(first_bit == SOFTSPI_FIRST_BIT_MSB)
-    {
+			{
         for(uint8_t idx = numb_bits; idx > 0; idx--)
         {
             /* MODE 0: CPOL = 0, CPHA = 0
@@ -181,7 +181,7 @@ int softspi_transmit(uint8_t first_bit, const uint8_t *p_data, uint16_t numb_bit
     }
 
     soft_spi_clk_low();
-    return 0;
+	return 0;
 }
 
 /**

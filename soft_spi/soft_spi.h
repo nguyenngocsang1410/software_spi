@@ -88,10 +88,10 @@
 #ifdef STM32F407xx
 
 #define TIM1_SRC_CLK             (168000000)    // TIM1 clock frequency
-#define TIM1_PRES				 (7)		    // TIM1 default prescaler
+#define TIM1_PRES				 				 (16)		    // TIM1 default prescaler
 #define TIM1_CLK                 (TIM1_SRC_CLK / TIM1_PRES) // 24_000_000Hz
 
-#define soft_spi_delay()         delay_ns(100)
+#define soft_spi_delay()         delay_us(1)
 #define soft_spi_clk_high()      HAL_GPIO_WritePin(SPI_CLK_PORT, SPI_CLK_PIN, GPIO_PIN_SET)
 #define soft_spi_clk_low()       HAL_GPIO_WritePin(SPI_CLK_PORT, SPI_CLK_PIN, GPIO_PIN_RESET)
 #define soft_spi_mosi_high()     HAL_GPIO_WritePin(SPI_MOSI_PORT, SPI_MOSI_PIN, GPIO_PIN_SET)

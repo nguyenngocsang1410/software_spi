@@ -125,7 +125,8 @@ uint32_t reverse_bit(uint32_t data_input, uint8_t data_bit_width);
 #define MEMS_INT2_GPIO_Port GPIOE
 
 /* USER CODE BEGIN Private defines */
-#define SANG_TEST		1
+#define SPI_MASTER_TEST 1
+#define SANG_TEST				0
 #define LINH_QEC_TEST   0
 #define HUNG_ADC_TEST   0
 /* USER CODE END Private defines */

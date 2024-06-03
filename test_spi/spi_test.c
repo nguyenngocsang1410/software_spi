@@ -885,39 +885,41 @@ int spi_master_cfg() {
 }
 int qec_test(uint8_t slave_addr)
 {
-    spi_test_reg_t spi_write_reg = {
-        .reg_addr = 420,
-        .reg_val = 94,
-        .reg_addr_size = 10,
-        .reg_val_size = 8
-    };
-    if (0 != spi_write_slave(slave_addr, (spi_test_reg_t*) &spi_write_reg, 1))
+	spi_test_reg_t spi_write_reg = {
+			.reg_addr = 420,
+			.reg_val = 94,
+			.reg_addr_size = 10,
+			.reg_val_size = 8
+	};
+	if (0 != spi_write_slave(slave_addr, (spi_test_reg_t*) &spi_write_reg, 1))
 	{
 		printf("\r\n [ERR] spi_test_slave failed to write slave \r\n");
 	}
-    delay_us(1);
-    spi_write_reg.reg_val = 0;
-    if (0 != spi_write_slave(slave_addr, (spi_test_reg_t*) &spi_write_reg, 1))
+	delay_us(1);
+	spi_write_reg.reg_val = 0;
+	if (0 != spi_write_slave(slave_addr, (spi_test_reg_t*) &spi_write_reg, 1))
 	{
 		printf("\r\n [ERR] spi_test_slave failed to write slave \r\n");
 	}
-    // Read reg 20-> 49
-    spi_test_reg_t spi_read_reg = {
-        .reg_addr_size = 10,
-        .reg_val_size = 8,
-    };
-    for(uint16_t start_addr = 200; start_addr <=419; start_addr++)
-    {
-        spi_read_reg.reg_addr = start_addr;
-        if (0 != spi_read_slave(slave_addr, (spi_test_reg_t*) &spi_read_reg, 1))
-        {
-            printf("\r\n [ERR] spi_test_slave failed to read slave \r\n");
-        }
-        printf("Read from slave addr: %d, reg addr: 0x%X, val: 0x%X, reg addr width: %d, reg val width: %d\n",
-                    slave_addr,  (unsigned int)spi_read_reg.reg_addr, (unsigned int)spi_read_reg.reg_val,
-                    spi_read_reg.reg_addr_size, spi_read_reg.reg_val_size);
-    }
-    return 0;
+	// Read reg 20-> 49
+	spi_test_reg_t spi_read_reg = {
+			.reg_addr_size = 10,
+			.reg_val_size = 8,
+	};
+	for (uint16_t start_addr = 200; start_addr <= 419; start_addr++)
+	{
+		spi_read_reg.reg_addr = start_addr;
+		if (0 != spi_read_slave(slave_addr, (spi_test_reg_t*) &spi_read_reg, 1))
+		{
+			printf("\r\n [ERR] spi_test_slave failed to read slave \r\n");
+		}
+		printf(
+				"Read from slave addr: %d, reg addr: 0x%X, val: 0x%X, reg addr width: %d, reg val width: %d\n",
+				slave_addr, (unsigned int) spi_read_reg.reg_addr,
+				(unsigned int) spi_read_reg.reg_val,
+				spi_read_reg.reg_addr_size, spi_read_reg.reg_val_size);
+	}
+	return 0;
 }
 
 int adc_test(uint8_t slave_addr)
