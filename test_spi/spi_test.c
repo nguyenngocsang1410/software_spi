@@ -654,8 +654,13 @@ int spi_slaves_config_dc()
  * 5: PLL chkpt1
  *
  * 6: PLL chkpt2
+ * 7: PLL Open loop HF
+ * 8: PLL Closed loop 2.6GHz
+ * 9: PLL Closed loop 3.7GHz
+ * 10: PLL Open loop LF
+ * 11: PLL Closed loop 2.7GHz
  */
-int cfg_counter = 6;
+int cfg_counter = 10;
 
 /**
  * 0: Write
@@ -704,8 +709,7 @@ int spi_master_cfg() {
 			{
 				printf("[ERR] Failed to write to %s\n",
 						spi_slave_devices_for_cfg[cfg_counter].slave_name);
-			}
-			HAL_Delay(3000); // ms
+			}			HAL_Delay(3000); // ms
 			break;
 		}
 		case 1:
