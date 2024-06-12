@@ -455,7 +455,7 @@ spi_test_reg_t spi_pll_cfg_regs_chkpt4[] =
 {
     /* REG_ADDR,         REG_VALUE,  REG_ADDR_SIZE,  REG_VALUE_SIZE */
     {0x00,                 0b100,       7,              8},
-    {0x01,                 0b11001,       7,              8},
+    {0x01,                 0b11111001,       7,              8},
     {0x02,                 0b1000000,       7,              8},
     {0x03,                 0,       7,              8},
     {0x04,                 0,       7,              8},
@@ -464,8 +464,9 @@ spi_test_reg_t spi_pll_cfg_regs_chkpt4[] =
     {0x07,                 0b10,       7,              8},
     {0x08,                 0b1100,       7,              8},
     {0x09,                 0,       7,              8},
-    {0x0A,                 0b1100,       7,              8},
-    {0x0B,                 0b11,       7,              8},
+	// Origin 0A: 12
+    {0x0A,                 10,       7,              8},
+    {0x0B,                 0b11,    	   7,              8},
     {DSM_ENABLE_ADDR,      0b110,       7,              8},
     {PLL_ADDR_0D_ADDR,     26,       7,              8},
     {FRAC_DIVE_B0_ADDR,    0,       7,              8},
@@ -487,7 +488,7 @@ spi_test_reg_t spi_pll_cfg_regs_chkpt5[] =
 {
     /* REG_ADDR,         REG_VALUE,  REG_ADDR_SIZE,  REG_VALUE_SIZE */
     {0x00,                 0b100,       7,              8},
-    {0x01,                 0b11001,       7,              8},
+    {0x01,                 0b11111001,       7,              8},
     {0x02,                 0b1000000,       7,              8},
     {0x03,                 0,       7,              8},
     {0x04,                 0,       7,              8},
@@ -551,7 +552,7 @@ spi_test_reg_t spi_pll_cfg_regs_chkpt7[] =
 {
     /* REG_ADDR,         REG_VALUE,  REG_ADDR_SIZE,  REG_VALUE_SIZE */
     {0x00,                 0b100,       7,              8},
-    {0x01,                 0b11001,       7,              8},
+    {0x01,                 0b11111001,       7,              8},
     {0x02,                 0,       7,              8},
     {0x03,                 0,       7,              8},
     {0x04,                 0,       7,              8},
@@ -579,7 +580,38 @@ spi_test_reg_t spi_pll_cfg_regs_chkpt7[] =
     {0x20,                 0,       7,              8},
 	{0x21,                 0,       7,              8},
 };
-
+spi_test_reg_t spi_pll_cfg_regs_chkpt8[] =
+{
+    /* REG_ADDR,         REG_VALUE,  REG_ADDR_SIZE,  REG_VALUE_SIZE */
+    {0x00,                 0b011,       7,              8},
+    {0x01,                 0,       7,              8},
+    {0x02,                 0,       7,              8},
+    {0x03,                 0,       7,              8},
+    {0x04,                 0,       7,              8},
+    {0x05,                 0,       7,              8},
+    {0x06,                 0,       7,              8},
+    {0x07,                 0,       7,              8},
+    {0x08,                 0b11111111,       7,              8},
+    {0x09,                 0b100000,       7,              8},
+    {0x0A,                 0,       7,              8},
+    {0x0B,                 0,       7,              8},
+    {DSM_ENABLE_ADDR,      0,       7,              8},
+    {PLL_ADDR_0D_ADDR,     0,       7,              8},
+    {FRAC_DIVE_B0_ADDR,    0,       7,              8},
+    {FRAC_DIVE_B1_ADDR,    0,       7,              8},
+    {FRAC_DIVE_B2_ADDR,    0,       7,              8},
+    {FRAC_DIVE_B3_ADDR,    0,       7,              8},
+    {0x12,                 0b11,       7,              8},
+    {0x13,                 0b11,       7,              8},
+    {0x14,                 0b1,       7,              8},
+    {0x15,                 0b1,       7,              8},
+    {0x16,                 0b1,       7,              8},
+    {0x17,                 0,       7,              8},
+	{0x18,                 0,       7,              8},
+    {0x19,                 0,       7,              8},
+    {0x20,                 0,       7,              8},
+	{0x21,                 0,       7,              8},
+};
 //------------------------------------------------------------------------------------
 
 const spi_test_reg_t spi_rx1_rssi_test_regs[] =
@@ -1687,6 +1719,8 @@ spi_slave_test_t spi_slave_devices_for_cfg[] = {
 { SPI_PLL_SLAVE_ADDR,	 	ARRAY_SIZE(spi_pll_cfg_regs_chkpt6),		spi_pll_cfg_regs_chkpt6, 	"PLL" },
 // Test 9: Closed loop 2.7GHz
 { SPI_PLL_SLAVE_ADDR,	 	ARRAY_SIZE(spi_pll_cfg_regs_chkpt7),		spi_pll_cfg_regs_chkpt7, 	"PLL" },
+// Test 10: Disable PLL
+{ SPI_PLL_SLAVE_ADDR,	 	ARRAY_SIZE(spi_pll_cfg_regs_chkpt8),		spi_pll_cfg_regs_chkpt8, 	"PLL" },
 };
 
 //------------------------------------------------------------------------------------

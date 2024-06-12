@@ -659,8 +659,9 @@ int spi_slaves_config_dc()
  * 9: PLL Closed loop 3.7GHz
  * 10: PLL Open loop LF
  * 11: PLL Closed loop 2.7GHz
+ * 12: Disable PLL
  */
-int cfg_counter = 10;
+int cfg_counter = 12;
 
 /**
  * 0: Write
