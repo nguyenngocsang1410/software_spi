@@ -69,10 +69,14 @@ uint32_t reverse_bit(uint32_t data_input, uint8_t data_bit_width);
 #define PC15_OSC32_OUT_GPIO_Port GPIOC
 #define OTG_FS_PowerSwitchOn_Pin GPIO_PIN_0
 #define OTG_FS_PowerSwitchOn_GPIO_Port GPIOC
+#define INDICATOR1_Pin GPIO_PIN_1
+#define INDICATOR1_GPIO_Port GPIOC
 #define PDM_OUT_Pin GPIO_PIN_3
 #define PDM_OUT_GPIO_Port GPIOC
 #define B1_Pin GPIO_PIN_0
 #define B1_GPIO_Port GPIOA
+#define INDICATOR2_Pin GPIO_PIN_1
+#define INDICATOR2_GPIO_Port GPIOA
 #define I2S3_WS_Pin GPIO_PIN_4
 #define I2S3_WS_GPIO_Port GPIOA
 #define SPI1_SCK_Pin GPIO_PIN_5
@@ -126,7 +130,7 @@ uint32_t reverse_bit(uint32_t data_input, uint8_t data_bit_width);
 
 /* USER CODE BEGIN Private defines */
 #define SPI_MASTER_TEST 0
-#define SANG_TEST		1
+#define SANG_TEST		    1
 #define LINH_QEC_TEST   0
 #define HUNG_ADC_TEST   0
 /* USER CODE END Private defines */

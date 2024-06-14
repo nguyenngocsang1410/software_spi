@@ -39,8 +39,6 @@ const spi_test_reg_t spi_tx1_test_regs[] =
     {0xF,                0x1,        7,              8},
     {0x10,               0x45,       7,              8},
 };
-
-
 const spi_test_reg_t spi_tx2_test_regs[] =
 {
     /* REG_ADDR,         REG_VALUE,  REG_ADDR_SIZE,  REG_VALUE_SIZE */
@@ -63,7 +61,6 @@ const spi_test_reg_t spi_tx2_test_regs[] =
     {0x10,               0x45,       7,              8},
 
 };
-
 const spi_test_reg_t spi_orx1_test_regs[] =
 {
     /* REG_ADDR,         REG_VALUE,  REG_ADDR_SIZE,  REG_VALUE_SIZE */
@@ -85,7 +82,6 @@ const spi_test_reg_t spi_orx1_test_regs[] =
 //    {DAC_BGR_EN_ADDR,     0x1,         7,              8}, // FAILED, maybe read-only
 //    {DAC_BGR_TR_ADDR,     0x45,        7,              8},
 };
-
 const spi_test_reg_t spi_orx2_test_regs[] =
 {
     /* REG_ADDR,         REG_VALUE,  REG_ADDR_SIZE,  REG_VALUE_SIZE */
@@ -107,7 +103,6 @@ const spi_test_reg_t spi_orx2_test_regs[] =
 //    {DAC_BGR_EN_ADDR,     0x1,         7,              8}, // FAILED, maybe read-only
 //    {DAC_BGR_TR_ADDR,     0x45,        7,              8},
 };
-
 const spi_test_reg_t spi_rx1_test_regs[] =
 {
     /* REG_ADDR,         REG_VALUE,  REG_ADDR_SIZE,  REG_VALUE_SIZE */
@@ -129,7 +124,6 @@ const spi_test_reg_t spi_rx1_test_regs[] =
 //    {DAC_BGR_EN_ADDR,     0x1,         7,              8}, // FAILED, maybe read-only
 //    {DAC_BGR_TR_ADDR,     0x45,        7,              8},
 };
-
 const spi_test_reg_t spi_rx2_test_regs[] =
 {
     /* REG_ADDR,         REG_VALUE,  REG_ADDR_SIZE,  REG_VALUE_SIZE */
@@ -151,7 +145,6 @@ const spi_test_reg_t spi_rx2_test_regs[] =
 //    {DAC_BGR_EN_ADDR,     0x1,         7,              8}, // FAILED, maybe read-only
 //    {DAC_BGR_TR_ADDR,     0x45,        7,              8},
 };
-
 const spi_test_reg_t spi_adc1_test_regs[] =
 {
     /* REG_ADDR,         REG_VALUE,  REG_ADDR_SIZE,  REG_VALUE_SIZE */
@@ -178,7 +171,6 @@ const spi_test_reg_t spi_adc1_test_regs[] =
     {ADC_REG_20_ADDR,     0x00,       14,              32},
     // {ADC_REG_21_ADDR,     0x00,       14,              32} // FAILED, maybe read-only
 };
-
 const spi_test_reg_t spi_adc2_test_regs[] =
 {
     /* REG_ADDR,         REG_VALUE,  REG_ADDR_SIZE,  REG_VALUE_SIZE */
@@ -205,7 +197,6 @@ const spi_test_reg_t spi_adc2_test_regs[] =
     {ADC_REG_20_ADDR,     0x00,       14,              32},
 //    {ADC_REG_21_ADDR,     0x00,       14,              32}  // FAILED, maybe read-only
 };
-
 const spi_test_reg_t spi_adc3_test_regs[] =
 {
     /* REG_ADDR,         REG_VALUE,  REG_ADDR_SIZE,  REG_VALUE_SIZE */
@@ -232,7 +223,6 @@ const spi_test_reg_t spi_adc3_test_regs[] =
     {ADC_REG_20_ADDR,     0x00,       14,              32},
 //    {ADC_REG_21_ADDR,     0x00,       14,              32} // FAILED, maybe read-only
 };
-
 const spi_test_reg_t spi_adc4_test_regs[] =
 {
     /* REG_ADDR,         REG_VALUE,  REG_ADDR_SIZE,  REG_VALUE_SIZE */
@@ -259,7 +249,6 @@ const spi_test_reg_t spi_adc4_test_regs[] =
     {ADC_REG_20_ADDR,     0x00,       14,              32},
 //    {ADC_REG_21_ADDR,     0x00,       14,              32} // FAILED, maybe read-only
 };
-
 const spi_test_reg_t spi_pll_test_regs[] =
 {
     /* REG_ADDR,         REG_VALUE,  REG_ADDR_SIZE,  REG_VALUE_SIZE */
@@ -288,8 +277,10 @@ const spi_test_reg_t spi_pll_test_regs[] =
     {0x16,                 0x11,       7,              8},
     {0x17,                 0x12,       7,              8},
 };
-//------------------------------------------------------------------------------------
-spi_test_reg_t spi_pll_cfg_regs[] =
+/* ========================================================================== */
+/*                                PLL profiles                                */
+/* ========================================================================== */
+const spi_test_reg_t spi_pll_cfg_regs_2[] =
 {
     /* REG_ADDR,         REG_VALUE,  REG_ADDR_SIZE,  REG_VALUE_SIZE */
     {0x00,                 0x0,       7,              8},
@@ -321,8 +312,7 @@ spi_test_reg_t spi_pll_cfg_regs[] =
     {0x20,                 0x0,       7,              8},
 	{0x21,                 0x0,       7,              8},
 };
-
-spi_test_reg_t spi_pll_cfg_regs_state_1[] =
+const spi_test_reg_t spi_pll_cfg_regs_3[] =
 {
     /* REG_ADDR,         REG_VALUE,  REG_ADDR_SIZE,  REG_VALUE_SIZE */
     {0x00,                 0b111,       7,              8},
@@ -354,8 +344,7 @@ spi_test_reg_t spi_pll_cfg_regs_state_1[] =
     {0x20,                 0b0,       7,              8},
 	{0x21,                 0b0,       7,              8},
 };
-
-spi_test_reg_t spi_pll_cfg_regs_chkpt1[] =
+const spi_test_reg_t spi_pll_cfg_regs_5[] =
 {
     /* REG_ADDR,         REG_VALUE,  REG_ADDR_SIZE,  REG_VALUE_SIZE */
     {0x00,                 0x2,       7,              8},
@@ -387,7 +376,7 @@ spi_test_reg_t spi_pll_cfg_regs_chkpt1[] =
     {0x20,                 0x0,       7,              8},
 	{0x21,                 0x0,       7,              8},
 };
-spi_test_reg_t spi_pll_cfg_regs_chkpt2[] =
+const spi_test_reg_t spi_pll_cfg_regs_6[] =
 {
     /* REG_ADDR,         REG_VALUE,  REG_ADDR_SIZE,  REG_VALUE_SIZE */
     {0x00,                 0b100,       7,              8},
@@ -419,7 +408,7 @@ spi_test_reg_t spi_pll_cfg_regs_chkpt2[] =
     {0x20,                 0x0,       7,              8},
 	{0x21,                 0x0,       7,              8},
 };
-spi_test_reg_t spi_pll_cfg_regs_chkpt3[] =
+const spi_test_reg_t spi_pll_cfg_regs_7[] =
 {
     /* REG_ADDR,         REG_VALUE,  REG_ADDR_SIZE,  REG_VALUE_SIZE */
     {0x00,                 0b111,       7,              8},
@@ -451,7 +440,7 @@ spi_test_reg_t spi_pll_cfg_regs_chkpt3[] =
     {0x20,                 0,       7,              8},
 	{0x21,                 0,       7,              8},
 };
-spi_test_reg_t spi_pll_cfg_regs_chkpt4[] =
+const spi_test_reg_t spi_pll_cfg_regs_8[] =
 {
     /* REG_ADDR,         REG_VALUE,  REG_ADDR_SIZE,  REG_VALUE_SIZE */
     {0x00,                 0b100,       7,              8},
@@ -484,7 +473,7 @@ spi_test_reg_t spi_pll_cfg_regs_chkpt4[] =
     {0x20,                 0,       7,              8},
 	{0x21,                 0,       7,              8},
 };
-spi_test_reg_t spi_pll_cfg_regs_chkpt5[] =
+const spi_test_reg_t spi_pll_cfg_regs_9[] =
 {
     /* REG_ADDR,         REG_VALUE,  REG_ADDR_SIZE,  REG_VALUE_SIZE */
     {0x00,                 0b100,       7,              8},
@@ -516,7 +505,7 @@ spi_test_reg_t spi_pll_cfg_regs_chkpt5[] =
     {0x20,                 0,       7,              8},
 	{0x21,                 0,       7,              8},
 };
-spi_test_reg_t spi_pll_cfg_regs_chkpt6[] =
+const spi_test_reg_t spi_pll_cfg_regs_10[] =
 {
     /* REG_ADDR,         REG_VALUE,  REG_ADDR_SIZE,  REG_VALUE_SIZE */
     {0x00,                 0b111,       7,              8},
@@ -548,7 +537,7 @@ spi_test_reg_t spi_pll_cfg_regs_chkpt6[] =
     {0x20,                 0,       7,              8},
 	{0x21,                 0,       7,              8},
 };
-spi_test_reg_t spi_pll_cfg_regs_chkpt7[] =
+const spi_test_reg_t spi_pll_cfg_regs_11[] =
 {
     /* REG_ADDR,         REG_VALUE,  REG_ADDR_SIZE,  REG_VALUE_SIZE */
     {0x00,                 0b100,       7,              8},
@@ -580,7 +569,7 @@ spi_test_reg_t spi_pll_cfg_regs_chkpt7[] =
     {0x20,                 0,       7,              8},
 	{0x21,                 0,       7,              8},
 };
-spi_test_reg_t spi_pll_cfg_regs_chkpt8[] =
+const spi_test_reg_t spi_pll_cfg_regs_12[] =
 {
     /* REG_ADDR,         REG_VALUE,  REG_ADDR_SIZE,  REG_VALUE_SIZE */
     {0x00,                 0b011,       7,              8},
@@ -612,8 +601,7 @@ spi_test_reg_t spi_pll_cfg_regs_chkpt8[] =
     {0x20,                 0,       7,              8},
 	{0x21,                 0,       7,              8},
 };
-//------------------------------------------------------------------------------------
-
+/* -------------------------------------------------------------------------- */
 const spi_test_reg_t spi_rx1_rssi_test_regs[] =
 {
     /* REG_ADDR,         REG_VALUE,  REG_ADDR_SIZE,  REG_VALUE_SIZE */
@@ -628,8 +616,10 @@ const spi_test_reg_t spi_rx1_rssi_test_regs[] =
 //    {0x08,                 0x09,       7,              10}, // FAILED, maybe read-only
     {0x09,                 0x0A,       7,              10},
 };
-//------------------------------------------------------------------------------------
-spi_test_reg_t spi_rx_rssi_cfg_regs[] =
+/* ========================================================================== */
+/*                                RSSI profiles                               */
+/* ========================================================================== */
+const spi_test_reg_t spi_rx_rssi_cfg_regs_0_1[] =
 {
     /* REG_ADDR,         REG_VALUE,  REG_ADDR_SIZE,  REG_VALUE_SIZE */
     {0x00,                 0x0,       7,              10},
@@ -642,8 +632,8 @@ spi_test_reg_t spi_rx_rssi_cfg_regs[] =
     {0x07,                 0x0,       7,              10},
     {0x09,                 0x0,       7,              10},
 };
-
-spi_test_reg_t spi_rx_rssi_cfg_regs_chkpt1[] = {
+const spi_test_reg_t spi_rx_rssi_cfg_regs_4[] = 
+{
 /* REG_ADDR,         REG_VALUE,  REG_ADDR_SIZE,  REG_VALUE_SIZE */
 	{0x00,                 0x0,       7,              10},
 	{0x01,                 0x0,       7,              10},
@@ -655,20 +645,7 @@ spi_test_reg_t spi_rx_rssi_cfg_regs_chkpt1[] = {
 	{0x07,                 0x2,       7,              10},
 	{0x09,                 0x0,       7,              10},
 };
-
-spi_test_reg_t spi_rx_rssi_cfg_regs_chkpt2[] = {
-/* REG_ADDR,         REG_VALUE,  REG_ADDR_SIZE,  REG_VALUE_SIZE */
-	{0x00,                 0x0,       7,              10},
-	{0x01,                 0x0,       7,              10},
-	{0x02,                 0x3,       7,              10},
-	{0x03,                 0x0,       7,              10},
-	{0x04,                 0x5,       7,              10},
-	{0x05,                 0x0,       7,              10},
-	{0x06,                 0x10,       7,              10},
-	{0x07,                 0x0,       7,              10},
-	{0x09,                 0x0,       7,              10},
-};
-//------------------------------------------------------------------------------------
+/* -------------------------------------------------------------------------- */
 const spi_test_reg_t spi_rx2_rssi_test_regs[] =
 {
     /* REG_ADDR,         REG_VALUE,  REG_ADDR_SIZE,  REG_VALUE_SIZE */
@@ -683,7 +660,6 @@ const spi_test_reg_t spi_rx2_rssi_test_regs[] =
 //    {0x08,                 0x09,       7,              10}, // FAILED, maybe read-only
 //    {0x09,                 0x0A,       7,              10},
 };
-
 const spi_test_reg_t spi_dac1_test_regs[] =
 {
     /* REG_ADDR,         REG_VALUE,  REG_ADDR_SIZE,  REG_VALUE_SIZE */
@@ -714,8 +690,6 @@ const spi_test_reg_t spi_dac1_test_regs[] =
     {0x18,                 0x11,       7,              16},
     {0x19,                 0x12,       7,              16},
 };
-
-
 const spi_test_reg_t spi_dac2_test_regs[] =
 {
     /* REG_ADDR,         REG_VALUE,  REG_ADDR_SIZE,  REG_VALUE_SIZE */
@@ -746,7 +720,6 @@ const spi_test_reg_t spi_dac2_test_regs[] =
     {0x18,                 0x11,       7,              16},
     {0x19,                 0x12,       7,              16},
 };
-
 const spi_test_reg_t spi_phy_test_regs[] =
 {
     /* REG_ADDR,         REG_VALUE,  REG_ADDR_SIZE,  REG_VALUE_SIZE */
@@ -786,7 +759,6 @@ const spi_test_reg_t spi_phy_test_regs[] =
     {0x22,                 0x28,       6,              8},
     {0x00,                 0x01,       6,              8},
 };
-
 const spi_test_reg_t spi_jesd_tx1_test_regs[] =
 {
     /* REG_ADDR,         REG_VALUE,  REG_ADDR_SIZE,  REG_VALUE_SIZE */
@@ -819,7 +791,6 @@ const spi_test_reg_t spi_jesd_tx1_test_regs[] =
     {0x02D0,              0X00000000,  10,             32},
     {0x03F0,              0X00000000,  10,             32}
 };
-
 const spi_test_reg_t spi_jesd_tx2_test_regs[] =
 {
     /* REG_ADDR,         REG_VALUE,  REG_ADDR_SIZE,  REG_VALUE_SIZE */
@@ -852,7 +823,6 @@ const spi_test_reg_t spi_jesd_tx2_test_regs[] =
     {0x02D0,              0X00000000,  10,             32},
     {0x03F0,              0X00000000,  10,             32}
 };
-
 const spi_test_reg_t spi_jesd_rx_test_regs[] =
 {
     /* REG_ADDR,         REG_VALUE,  REG_ADDR_SIZE,  REG_VALUE_SIZE */
@@ -883,7 +853,6 @@ const spi_test_reg_t spi_jesd_rx_test_regs[] =
     {0x02E8,              0X00000001,  10,             32},
     {0x03F4,              0X00000000,  10,             32}
 };
-
 const spi_test_reg_t spi_qec_test_regs[] =
 {
     /* REG_ADDR,         REG_VALUE,  REG_ADDR_SIZE,  REG_VALUE_SIZE */
@@ -953,7 +922,6 @@ const spi_test_reg_t spi_qec_test_regs[] =
     {0x3F,                0x04,       10,             8},
     {0x40,                0x18,       10,             8}
 };
-
 const spi_test_reg_t spi_fir_tx_test_regs[] =
 {
     /* REG_ADDR,         REG_VALUE,  REG_ADDR_SIZE,  REG_VALUE_SIZE */
@@ -1202,8 +1170,8 @@ const spi_test_reg_t spi_fir_tx_test_regs[] =
     {0xF2,                0x0,        10,             8},
     {0xF3,                0x5,        10,             8},
 };
-
-const spi_test_reg_t spi_fir_rx_test_regs[] = {
+const spi_test_reg_t spi_fir_rx_test_regs[] = 
+{
 /* REG_ADDR,         REG_VALUE,  REG_ADDR_SIZE,  REG_VALUE_SIZE */
     {421,           0b00010000,        10,          8},
     {422,           0b00000000,        10,          8},
@@ -1626,8 +1594,8 @@ const spi_test_reg_t spi_fir_rx_test_regs[] = {
     {219,           0b00000000,        10,          8},
     {0  ,           0b00000001,        10,          8},
 };
-
-const spi_test_reg_t spi_tx_conf_dc_regs[] = {
+const spi_test_reg_t spi_tx_conf_dc_regs[] = 
+{
 /* REG_ADDR,         REG_VALUE,  REG_ADDR_SIZE,  REG_VALUE_SIZE */
     {0x0,                0x18,       7,              8},
     {0x1,                0x70,       7,              8},
@@ -1647,14 +1615,13 @@ const spi_test_reg_t spi_tx_conf_dc_regs[] = {
     {0xF,                0x1,        7,              8},
     {0x10,               0x45,       7,              8},
 };
-
-
 /******************************************************************************
 * Slave devices
 *******************************************************************************/
 /**
  * @brief Array of SPI slave devices.
  */
+/* ----------------------------- Scan all slaves ---------------------------- */
 spi_slave_test_t spi_slave_devices[] =
 {
     /* SLAVE ADDR,                  SLAVE_NUMB_REGS,                         SLAVE_REGS,                    SLAVE_NAME*/
@@ -1694,36 +1661,39 @@ spi_slave_test_t spi_slave_devices[] =
 	{SPI_FIR_ORX2_SLAVE_ADDR,       ARRAY_SIZE(spi_fir_rx_test_regs),       spi_fir_rx_test_regs,           "FIR ORX2"},
 };
 
-//------------------------------------------------------------------------------------
-#define SLAVE_DEVICES_FOR_CFG spi_slave_devices_for_cfg
-/**
- * cfg_counter = {4,5} --> chkpt1: RSSI test: performance AUXADC
- * cfg_counter = 6 --> chkpt2: PLL closed-loop
- */
-spi_slave_test_t spi_slave_devices_for_cfg[] = {
+/* -------------------------------- Sang test ------------------------------- */
+spi_slave_test_t spi_slave_devices_for_cfg[] = 
+{
 /* SLAVE ADDR,                  SLAVE_NUMB_REGS,                         SLAVE_REGS,                    SLAVE_NAME*/
-{ SPI_RX1_RSSI_SLAVE_ADDR, 	ARRAY_SIZE(spi_rx_rssi_cfg_regs),			spi_rx_rssi_cfg_regs, 		"RX1 RSSI" },
-{ SPI_RX2_RSSI_SLAVE_ADDR, 	ARRAY_SIZE(spi_rx_rssi_cfg_regs), 			spi_rx_rssi_cfg_regs, 		"RX2 RSSI" },
-{ SPI_PLL_SLAVE_ADDR, 		ARRAY_SIZE(spi_pll_cfg_regs), 				spi_pll_cfg_regs, 			"PLL" },
-{ SPI_PLL_SLAVE_ADDR,	 	ARRAY_SIZE(spi_pll_cfg_regs_state_1),		spi_pll_cfg_regs_state_1, 	"PLL" },
-{ SPI_RX2_RSSI_SLAVE_ADDR, 	ARRAY_SIZE(spi_rx_rssi_cfg_regs_chkpt1), 	spi_rx_rssi_cfg_regs_chkpt1, "RX2 RSSI" },
-{ SPI_PLL_SLAVE_ADDR,	 	ARRAY_SIZE(spi_pll_cfg_regs_chkpt1),		spi_pll_cfg_regs_chkpt1, 	"PLL" },
-{ SPI_PLL_SLAVE_ADDR,	 	ARRAY_SIZE(spi_pll_cfg_regs_chkpt2),		spi_pll_cfg_regs_chkpt2, 	"PLL" },
-// Test 5: Open loop HF
-{ SPI_PLL_SLAVE_ADDR,	 	ARRAY_SIZE(spi_pll_cfg_regs_chkpt3),		spi_pll_cfg_regs_chkpt3, 	"PLL" },
-// Test 6: Closed loop 2.6GHz
-{ SPI_PLL_SLAVE_ADDR,	 	ARRAY_SIZE(spi_pll_cfg_regs_chkpt4),		spi_pll_cfg_regs_chkpt4, 	"PLL" },
-// Test 7: Closed loop 3.7GHz
-{ SPI_PLL_SLAVE_ADDR,	 	ARRAY_SIZE(spi_pll_cfg_regs_chkpt5),		spi_pll_cfg_regs_chkpt5, 	"PLL" },
-// Test 8: Open loop LF
-{ SPI_PLL_SLAVE_ADDR,	 	ARRAY_SIZE(spi_pll_cfg_regs_chkpt6),		spi_pll_cfg_regs_chkpt6, 	"PLL" },
-// Test 9: Closed loop 2.7GHz
-{ SPI_PLL_SLAVE_ADDR,	 	ARRAY_SIZE(spi_pll_cfg_regs_chkpt7),		spi_pll_cfg_regs_chkpt7, 	"PLL" },
-// Test 10: Disable PLL
-{ SPI_PLL_SLAVE_ADDR,	 	ARRAY_SIZE(spi_pll_cfg_regs_chkpt8),		spi_pll_cfg_regs_chkpt8, 	"PLL" },
+// Config 0: Default RX1 RSSI
+{ SPI_RX1_RSSI_SLAVE_ADDR, 	ARRAY_SIZE(spi_rx_rssi_cfg_regs_0_1),   spi_rx_rssi_cfg_regs_0_1,   "RX1 RSSI" },
+// Config 1: Default RX2 RSSI
+{ SPI_RX2_RSSI_SLAVE_ADDR, 	ARRAY_SIZE(spi_rx_rssi_cfg_regs_0_1),   spi_rx_rssi_cfg_regs_0_1,   "RX2 RSSI" },
+// Config 2: Default PLL
+{ SPI_PLL_SLAVE_ADDR, 		ARRAY_SIZE(spi_pll_cfg_regs_2),         spi_pll_cfg_regs_2,         "PLL" },
+// Config 3: Untitled
+{ SPI_PLL_SLAVE_ADDR,	 	ARRAY_SIZE(spi_pll_cfg_regs_3),         spi_pll_cfg_regs_3,         "PLL" },
+// Config 4: RSSI test: performance AUXADC
+{ SPI_RX2_RSSI_SLAVE_ADDR, 	ARRAY_SIZE(spi_rx_rssi_cfg_regs_4), 	spi_rx_rssi_cfg_regs_4,     "RX2 RSSI" },
+// Config 5: RSSI test: performance AUXADC
+{ SPI_PLL_SLAVE_ADDR,	 	ARRAY_SIZE(spi_pll_cfg_regs_5),		    spi_pll_cfg_regs_5, 	    "PLL" },
+// Config 6: PLL closed-loop check
+{ SPI_PLL_SLAVE_ADDR,	 	ARRAY_SIZE(spi_pll_cfg_regs_6),		    spi_pll_cfg_regs_6, 	    "PLL" },
+// Config 7: Open loop HF
+{ SPI_PLL_SLAVE_ADDR,	 	ARRAY_SIZE(spi_pll_cfg_regs_7),		    spi_pll_cfg_regs_7, 	    "PLL" },
+// Config 8: Closed loop 2.6GHz
+{ SPI_PLL_SLAVE_ADDR,	 	ARRAY_SIZE(spi_pll_cfg_regs_8),		    spi_pll_cfg_regs_8, 	    "PLL" },
+// Config 9: Closed loop 3.7GHz
+{ SPI_PLL_SLAVE_ADDR,	 	ARRAY_SIZE(spi_pll_cfg_regs_9),		    spi_pll_cfg_regs_9, 	    "PLL" },
+// Config 10: Open loop LF
+{ SPI_PLL_SLAVE_ADDR,	 	ARRAY_SIZE(spi_pll_cfg_regs_10),		spi_pll_cfg_regs_10, 	    "PLL" },
+// Config 11: Closed loop 2.7GHz
+{ SPI_PLL_SLAVE_ADDR,	 	ARRAY_SIZE(spi_pll_cfg_regs_11),		spi_pll_cfg_regs_11, 	    "PLL" },
+// Config 12: Disable PLL
+{ SPI_PLL_SLAVE_ADDR,	 	ARRAY_SIZE(spi_pll_cfg_regs_12),		spi_pll_cfg_regs_12, 	    "PLL" },
 };
 
-//------------------------------------------------------------------------------------
+/* -------------------------- spi_slaves_config_dc -------------------------- */
 spi_slave_test_t spi_slaves_conf[] = 
 {
     {SPI_TX1_SLAVE_ADDR,            ARRAY_SIZE(spi_tx_conf_dc_regs),          spi_tx_conf_dc_regs,              "TX1"},

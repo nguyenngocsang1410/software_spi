@@ -313,77 +313,76 @@ int cmd_spi_write_slave_ack(uint8_t* p_payload, uint16_t* p_len)
  */
 int cmd_spi_read_slave(uint8_t* p_payload, uint16_t* p_len)
 {
-    assert(p_payload != NULL);
-    assert(p_len != NULL);
-    if(*p_len != 11)
-    {
-        printf("\r\n [ERR] Invalid length \r\n");
-        return ERR_INVALID_CMD;
-    }
-    printf("\r\n [INFO] CMD_SPI_READ_SLAVE \r\n");
-
-    uint8_t slave_addr = p_payload[0];
-    uint32_t reg_addr = *(uint32_t*)&p_payload[1];
-    uint8_t reg_addr_size = p_payload[5];
-
-    uint8_t reg_val_size = p_payload[6];
-    uint32_t numb_reg_to_read = *(uint32_t*)&p_payload[7];
-//#if !TEST
-//    numb_reg_to_read = 1;
-//#endif /*!TEST */
-
-    spi_test_reg_t spi_read_reg = {
-        .reg_addr = reg_addr,
-        .reg_addr_size = reg_addr_size,
-        .reg_val_size = reg_val_size,
-    };
-    // Read slave (currently support only 1 slave)
-    if (0 != spi_read_slave(slave_addr, &spi_read_reg, numb_reg_to_read))
-    {
-        printf("\r\n [ERR] CMD_SPI_READ_SLAVE failed to read slave \r\n");
-        return ERR_CMD_EXEC_FAIL;
-    }
-    printf("\r[INFO] Slave: %d, reg_addr: 0x%08X, reg_addr_size: %db, reg_val: 0x%08X, reg_val_size: %db \r\n",
-                slave_addr, (unsigned int) spi_read_reg.reg_addr, spi_read_reg.reg_addr_size,
-                (unsigned int) spi_read_reg.reg_val, spi_read_reg.reg_val_size);
-    memcpy(&p_payload[7], &spi_read_reg.reg_val, 4);
+//    assert(p_payload != NULL);
+//    assert(p_len != NULL);
+//    if(*p_len != 11)
+//    {
+//        printf("\r\n [ERR] Invalid length \r\n");
+//        return ERR_INVALID_CMD;
+//    }
+//    printf("\r\n [INFO] CMD_SPI_READ_SLAVE \r\n");
+//
+//    uint8_t slave_addr = p_payload[0];
+//    uint32_t reg_addr = *(uint32_t*)&p_payload[1];
+//    uint8_t reg_addr_size = p_payload[5];
+//
+//    uint8_t reg_val_size = p_payload[6];
+//    uint32_t numb_reg_to_read = *(uint32_t*)&p_payload[7];
+////#if !TEST
+////    numb_reg_to_read = 1;
+////#endif /*!TEST */
+//
+//    spi_test_reg_t spi_read_reg = {
+//        .reg_addr = reg_addr,
+//        .reg_addr_size = reg_addr_size,
+//        .reg_val_size = reg_val_size,
+//    };
+//    // Read slave (currently support only 1 slave)
+//    if (0 != spi_read_slave(slave_addr, &spi_read_reg, numb_reg_to_read))
+//    {
+//        printf("\r\n [ERR] CMD_SPI_READ_SLAVE failed to read slave \r\n");
+//        return ERR_CMD_EXEC_FAIL;
+//    }
+//    printf("\r[INFO] Slave: %d, reg_addr: 0x%08X, reg_addr_size: %db, reg_val: 0x%08X, reg_val_size: %db \r\n",
+//                slave_addr, (unsigned int) spi_read_reg.reg_addr, spi_read_reg.reg_addr_size,
+//                (unsigned int) spi_read_reg.reg_val, spi_read_reg.reg_val_size);
+//    memcpy(&p_payload[7], &spi_read_reg.reg_val, 4);
     return ERR_OK;
 }
 
-extern spi_test_reg_t spi_auto_read_reg;
-extern bool AUTO_READ_FLAG;
+//extern bool _case2_read_enable;
 int cmd_spi_auto_read(uint8_t* p_payload, uint16_t* p_len)
 {
-    assert(p_payload != NULL);
-    assert(p_len != NULL);
-
-    uint8_t slave_addr = p_payload[0];
-
-    uint32_t reg_addr = *(uint32_t*)&p_payload[1];
-    uint8_t reg_addr_size = p_payload[5];
-	uint32_t reg_value = *(uint32_t*) (&p_payload[6]);
-    uint8_t reg_val_size = p_payload[10];
-	if (reg_value == 0)
-	{
-		spi_auto_read_reg = (spi_test_reg_t )
-				{
-						.reg_addr = reg_addr,
-						.reg_val = reg_value,
-						.reg_addr_size = reg_addr_size,
-						.reg_val_size = reg_val_size
-				};
-		AUTO_READ_FLAG = true;
-	}else
-	{
-		spi_auto_read_reg = (spi_test_reg_t )
-				{
-						.reg_addr = 0,
-						.reg_val = 0,
-						.reg_addr_size = 0,
-						.reg_val_size = 0,
-				};
-		AUTO_READ_FLAG = false;
-	}
+//    assert(p_payload != NULL);
+//    assert(p_len != NULL);
+//
+//    uint8_t slave_addr = p_payload[0];
+//
+//    uint32_t reg_addr = *(uint32_t*)&p_payload[1];
+//    uint8_t reg_addr_size = p_payload[5];
+//	uint32_t reg_value = *(uint32_t*) (&p_payload[6]);
+//    uint8_t reg_val_size = p_payload[10];
+//	if (reg_value == 0)
+//	{
+//		spi_auto_read_reg = (spi_test_reg_t )
+//				{
+//						.reg_addr = reg_addr,
+//						.reg_val = reg_value,
+//						.reg_addr_size = reg_addr_size,
+//						.reg_val_size = reg_val_size
+//				};
+//		_case2_read_enable = true;
+//	}else
+//	{
+//		spi_auto_read_reg = (spi_test_reg_t )
+//				{
+//						.reg_addr = 0,
+//						.reg_val = 0,
+//						.reg_addr_size = 0,
+//						.reg_val_size = 0,
+//				};
+//		_case2_read_enable = false;
+//	}
     return ERR_OK;
 }
 /*<<<<-----------------------------------------------------------------------*/

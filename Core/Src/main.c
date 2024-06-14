@@ -212,8 +212,10 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  // Test SPI
-	SPI_SRC_INTERNAL();
+
+  // Test internal SPI
+	// SPI_SRC_INTERNAL();
+  
   SPI_SRC_EXTERNAL();
 
 	if (uart_app_init()) {
@@ -290,10 +292,14 @@ int main(void)
 #if (HUNG_ADC_TEST != 0)
   adc_test();
 #endif /* End of (HUNG_ADC_TEST != 0) */
-	while (1) {
+	
+  while (1) {
+
 #if (SANG_TEST == 1)
+    // Use SPI master 
 		spi_master_cfg();
 #endif
+
 #if (SPI_SLAVE_TEST_EN == 1)
     while(1)
     {
@@ -301,6 +307,8 @@ int main(void)
       spi_master_test();
     }
 #endif /* End of (SPI_SLAVE_TEST_EN == 1) */
+
+    /* -------------------------------- UART part ------------------------------- */
     if(uart_fifo_receive(frame_received_buf, &frame_recv_size) == 0)
     {
         PRINTF_MAIN("Data recv from UART FIFO: %.*s\n", frame_recv_size, frame_received_buf);
@@ -313,7 +321,6 @@ int main(void)
             }
         }
     }
-
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
